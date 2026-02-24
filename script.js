@@ -6,6 +6,111 @@ const CONFIG = {
 };
 
 let rawData = [];
+/* ═══════════════════════════════════
+   i18n — TRANSLATION SYSTEM ID / EN
+   ═══════════════════════════════════ */
+let currentLang = localStorage.getItem('lang') || 'id';
+
+const TRANSLATIONS = {
+    id: {
+        enterWorld:     'MASUK DUNIA',
+        patchNotes:     'CATATAN PATCH',
+        subtitle:       'Selami Dunia Legenda. Pilih takdirmu.',
+        flavorText:     'Legenda kuno menunggumu. Jelajahi arsip dan temukan jalanmu.',
+        searchPlaceholder: 'Cari legend...',
+        filterRarity:   'RARITAS',
+        filterTags:     'TAG',
+        resetFilter:    'Reset',
+        selectRealm:    'PILIH DUNIA',
+        close:          'TUTUP',
+        loreHeader:     'LORE / KISAH',
+        galleryTitle:   'GALERI',
+        patchTitle:     'CATATAN PATCH',
+        langBtn:        'EN',
+        catCharacter:   'KARAKTER',
+        catMonster:     'MONSTER',
+        catPet:         'PET',
+        catItem:        'ITEM',
+        catMagic:       'SIHIR',
+        catArea:        'AREA',
+    },
+    en: {
+        enterWorld:     'ENTER WORLD',
+        patchNotes:     'PATCH NOTES',
+        subtitle:       'Dive into the World of Legends. Choose your destiny.',
+        flavorText:     'Ancient legends are waiting for your command. Explore the archives and find your path.',
+        searchPlaceholder: 'Search legend...',
+        filterRarity:   'RARITY',
+        filterTags:     'TAGS',
+        resetFilter:    'Reset',
+        selectRealm:    'SELECT REALM',
+        close:          'CLOSE',
+        loreHeader:     'LORE / STORY',
+        galleryTitle:   'GALLERY',
+        patchTitle:     'PATCH NOTES',
+        langBtn:        'ID',
+        catCharacter:   'CHARACTER',
+        catMonster:     'MONSTER',
+        catPet:         'PET',
+        catItem:        'ITEM',
+        catMagic:       'MAGIC',
+        catArea:        'AREA',
+    }
+};
+
+function applyTranslations() {
+    const t = TRANSLATIONS[currentLang];
+
+    // Page 1
+    const startBtn = document.getElementById('start-btn');
+    if (startBtn) startBtn.textContent = t.enterWorld;
+    const patchBtn = document.getElementById('patch-btn');
+    if (patchBtn) patchBtn.textContent = t.patchNotes;
+    const subtitle = document.querySelector('.rpg-subtitle');
+    if (subtitle) subtitle.textContent = t.subtitle;
+    const flavor = document.querySelector('.rpg-flavor-text');
+    if (flavor) flavor.textContent = t.flavorText;
+
+    // Page 2 search
+    const searchInput = document.getElementById('unit-search');
+    if (searchInput) searchInput.placeholder = t.searchPlaceholder;
+
+    // Filter labels
+    const filterLabels = document.querySelectorAll('.filter-section label');
+    if (filterLabels[0]) filterLabels[0].textContent = t.filterRarity;
+    if (filterLabels[1]) filterLabels[1].textContent = t.filterTags;
+
+    // Page 3 lore box header
+    const boxHeader = document.querySelector('.box-header');
+    if (boxHeader) boxHeader.textContent = t.loreHeader;
+
+    // Gallery title
+    const galleryTitle = document.querySelector('.gallery-title');
+    if (galleryTitle) galleryTitle.textContent = t.galleryTitle;
+
+    // Modal titles
+    const modalTitle = document.querySelector('#category-modal .modal-content h3');
+    if (modalTitle) modalTitle.textContent = t.selectRealm;
+    const patchModalTitle = document.querySelector('#patch-modal .modal-content h3');
+    if (patchModalTitle) patchModalTitle.textContent = t.patchTitle;
+
+    // Close buttons
+    document.querySelectorAll('#close-modal, #close-patch, #close-calendar').forEach(btn => {
+        if (btn) btn.textContent = t.close;
+    });
+
+    // Lang toggle button label
+    const langBtn = document.getElementById('lang-toggle-btn');
+    if (langBtn) langBtn.textContent = t.langBtn;
+}
+
+function toggleLang() {
+    currentLang = currentLang === 'id' ? 'en' : 'id';
+    localStorage.setItem('lang', currentLang);
+    applyTranslations();
+}
+
+
 let currentCat = localStorage.getItem('currentCat') || 'Character';
 let filters = { search: '', rarity: '', tags: [] };
 let lastScrollY = 0;
@@ -174,13 +279,9 @@ async function loadRealmData() {
 
             const csvText = await response.text();
             rawData = parseCSV(csvText);
-            console.log('=== CSV FETCH SUCCESS ===');
-            console.log('Rows loaded:', rawData.length);
-            if (rawData.length > 0) console.log('First row:', rawData[0]);
 
             // Kalau data kosong/gagal parse, fallback ke mock
             if (!rawData || rawData.length === 0) {
-                console.warn('Data kosong! Fallback ke mock data.');
                 rawData = getMockArchive();
             }
         }
@@ -426,6 +527,13 @@ async function init() {
     setInterval(() => UI.updateClock(), 1000);
     UI.updateClock();
 
+    // Lang toggle button
+    const langToggleBtn = document.getElementById('lang-toggle-btn');
+    if (langToggleBtn) langToggleBtn.onclick = () => toggleLang();
+
+    // Apply translations on load
+    applyTranslations();
+
     // ── BUTTON REQUEST hanya muncul di page-1 — dikelola oleh showPage() ──
     // JANGAN set display di sini agar tidak override logic showPage()
 
@@ -545,7 +653,7 @@ function selectRealm(cat, show = true) {
 
 function populateTags() {
     const tags = new Set();
-    rawData.filter(u => (u.category || '').trim().toLowerCase() === currentCat.trim().toLowerCase()).forEach(u => {
+    rawData.filter(u => u.category === currentCat).forEach(u => {
         if (u.tags) u.tags.split(',').forEach(t => tags.add(t.trim()));
     });
     const container = document.getElementById('dynamic-tags');
@@ -572,21 +680,10 @@ function populateTags() {
 function renderArchive() {
     const grid = document.getElementById('unit-grid');
     if (!grid) return;
-
-    // DEBUG — cek isi rawData di console
-    console.log('=== DEBUG rawData ===');
-    console.log('Total data:', rawData.length);
-    console.log('Current category:', currentCat);
-    if (rawData.length > 0) {
-        console.log('Sample row:', rawData[0]);
-        console.log('Semua kategori di data:', [...new Set(rawData.map(u => u.category))]);
-    }
-
     const filtered = rawData.filter(u => {
-        // FIX: case-insensitive + trim whitespace supaya ga mismatch
-        const matchCat = (u.category || '').trim().toLowerCase() === currentCat.trim().toLowerCase();
+        const matchCat = u.category === currentCat;
         const matchSearch = (u.name || '').toLowerCase().includes(filters.search || '');
-        const matchRarity = filters.rarity ? (u.rarity || '').trim().toUpperCase() === filters.rarity.toUpperCase() : true;
+        const matchRarity = filters.rarity ? u.rarity === filters.rarity : true;
         const matchTags = filters.tags && filters.tags.length > 0 ? filters.tags.every(t => u.tags && u.tags.includes(t)) : true;
         return matchCat && matchSearch && matchRarity && matchTags;
     });
@@ -594,7 +691,7 @@ function renderArchive() {
     // Update count bar — tampil "60 Character", "20 Pet", dst
     const countEl = document.getElementById('p2-count-text');
     if (countEl) {
-        const totalInCat = rawData.filter(u => (u.category || '').trim().toLowerCase() === currentCat.trim().toLowerCase()).length;
+        const totalInCat = rawData.filter(u => u.category === currentCat).length;
         const showing = filtered.length;
         const isFiltered = showing < totalInCat;
         countEl.textContent = isFiltered

@@ -1088,9 +1088,68 @@ body {
 @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
 
 /* Desktop */
+/* ═══════════════════════════════════════
+   TABLET (768px+)
+   ═══════════════════════════════════════ */
 @media (min-width: 768px) {
-    .unit-grid { grid-template-columns: repeat(5, 1fr); }
+    .unit-grid { grid-template-columns: repeat(4, 1fr) !important; }
     .category-grid { grid-template-columns: repeat(5, 1fr); max-width: 700px; }
+    .page-container { max-width: 700px; }
+}
+
+/* ═══════════════════════════════════════
+   DESKTOP (1024px+)
+   ═══════════════════════════════════════ */
+@media (min-width: 1024px) {
+
+    /* PAGE 1 DESKTOP */
+    .rpg-title { font-size: 3.5rem !important; letter-spacing: 8px !important; }
+    .hero-content { transform: translateY(0) !important; }
+    .p1-btns { max-width: 320px !important; }
+    .rpg-btn { font-size: 1.1rem !important; padding: 16px 40px !important; }
+    .category-grid { grid-template-columns: repeat(6, 1fr) !important; max-width: 900px !important; padding: 50px 30px 30px !important; }
+
+    /* PAGE 2 DESKTOP */
+    #page-2 { padding-top: 0 !important; }
+    #page-2 .page-container { max-width: 1100px !important; padding: 0 30px !important; }
+    .rpg-header { border-radius: 0 0 20px 20px !important; padding: 18px 24px 0 !important; }
+    .p2-title-wrap h2 { font-size: 2rem !important; }
+    .p2-search-box { height: 46px !important; }
+    .p2-filter-btn { width: 46px !important; height: 46px !important; }
+    .unit-grid { grid-template-columns: repeat(5, 1fr) !important; gap: 16px !important; padding: 20px 0 120px !important; }
+    .unit-card { border-radius: 20px !important; }
+    .unit-info .name { font-size: 0.85rem !important; }
+
+    /* PAGE 3 DESKTOP — SIDE BY SIDE */
+    #page-3 { padding-top: 0 !important; }
+    .detail-view { max-width: 100% !important; }
+    .detail-layout { flex-direction: row !important; align-items: flex-start !important; min-height: 100vh; gap: 0; }
+    .unit-visual { width: 42% !important; height: 100vh !important; position: sticky !important; top: 0 !important; min-height: 100vh !important; flex-shrink: 0; }
+    .image-frame { height: 100% !important; border-radius: 0 !important; }
+    .image-frame img { height: 100% !important; object-fit: cover !important; }
+    .image-frame::after { height: 35% !important; }
+
+    /* Right column */
+    .unit-bio { flex: 1 !important; padding: 80px 40px 30px !important; margin-top: 0 !important; text-align: center !important; min-height: 100vh; }
+    .unit-bio h1 { font-size: 2.2rem !important; margin-top: 0 !important; }
+    .unit-bio h3 { font-size: 1rem !important; }
+    .detail-tags { justify-content: center !important; gap: 10px !important; }
+    .tag { font-size: 0.7rem !important; padding: 6px 14px !important; }
+    .rpg-box { font-size: 0.95rem !important; padding: 32px 24px 22px !important; }
+    .unit-gallery { flex: 1 !important; padding: 0 40px 40px !important; margin: 0 !important; }
+    .extra-img { width: 80px !important; height: 108px !important; }
+    .extra-img.active { width: 100px !important; height: 134px !important; }
+
+    /* Rarity badge desktop */
+    #detail-rarity-badge { top: 80px !important; right: 20px !important; width: 54px !important; height: 42px !important; font-size: 1.3rem !important; }
+
+    /* Nav buttons desktop */
+    .detail-nav-static { padding: 0 20px !important; }
+    .nav-btn-circle { width: 46px !important; height: 46px !important; }
+
+    /* Bottom controls desktop */
+    .bottom-controls { padding: 0 30px !important; }
+    #refresh-btn { bottom: 24px !important; right: 24px !important; }
 }
 
 /* =========================
@@ -1645,6 +1704,45 @@ body {
     background: var(--accent-clr);
     color: #fff;
     transform: scale(1.1);
+}
+
+
+/* ── LANGUAGE TOGGLE BUTTON ── */
+#lang-toggle-btn {
+    position: fixed;
+    bottom: 68px;
+    right: 20px;
+    z-index: 9999;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--secondary-bg);
+    border: 2px solid var(--accent-clr);
+    color: var(--accent-clr);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.55rem;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+    transition: var(--transition);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+#lang-toggle-btn:hover {
+    background: var(--accent-clr);
+    color: #fff;
+    transform: scale(1.1);
+}
+
+@media (min-width: 1024px) {
+    #lang-toggle-btn {
+        bottom: 72px;
+        right: 24px;
+    }
 }
 
 /* Anti-screenshot print block */
