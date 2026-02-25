@@ -108,6 +108,42 @@ function toggleLang() {
     currentLang = currentLang === 'id' ? 'en' : 'id';
     localStorage.setItem('lang', currentLang);
     applyTranslations();
+    // Re-render page 3 detail if currently on page 3
+    const lastUnit = localStorage.getItem('lastUnit');
+    const page3 = document.getElementById('page-3');
+    if (lastUnit && page3 && page3.classList.contains('active')) {
+        showLegendDetail(lastUnit);
+    }
+    // Re-populate tags in filter panel
+    populateTags();
+}
+
+/* ═══════════════════════════════════════
+   TRANSLATE ENGINE — MyMemory Free API
+   Cache: translationCache[lang][text]
+   ═══════════════════════════════════════ */
+const translationCache = { en: {}, id: {} };
+
+async function translateText(text, targetLang) {
+    if (!text || !text.trim()) return text;
+    if (targetLang === 'id') return text; // Source is already ID
+    const cacheKey = text.trim();
+    if (translationCache[targetLang][cacheKey]) return translationCache[targetLang][cacheKey];
+    try {
+        const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=id|en`;
+        const res = await fetch(url);
+        const data = await res.json();
+        const translated = data?.responseData?.translatedText || text;
+        translationCache[targetLang][cacheKey] = translated;
+        return translated;
+    } catch (e) {
+        return text; // fallback: return original
+    }
+}
+
+async function translateMultiple(texts, targetLang) {
+    if (targetLang === 'id') return texts;
+    return Promise.all(texts.map(t => translateText(t, targetLang)));
 }
 
 
@@ -651,7 +687,7 @@ function selectRealm(cat, show = true) {
     if (show) UI.showPage('page-2');
 }
 
-function populateTags() {
+async function populateTags() {
     const tags = new Set();
     rawData.filter(u => (u.category || '').trim().toLowerCase() === currentCat.trim().toLowerCase()).forEach(u => {
         if (u.tags) u.tags.split(',').forEach(t => tags.add(t.trim()));
@@ -659,10 +695,25 @@ function populateTags() {
     const container = document.getElementById('dynamic-tags');
     if (!container) return;
     container.innerHTML = '';
-    tags.forEach(tag => {
+
+    const rawTagArr = Array.from(tags);
+
+    // Translate tags if EN
+    let displayTagArr = rawTagArr;
+    if (currentLang === 'en' && rawTagArr.length > 0) {
+        try {
+            displayTagArr = await translateMultiple(rawTagArr, 'en');
+        } catch(e) {
+            displayTagArr = rawTagArr;
+        }
+    }
+
+    rawTagArr.forEach((tag, i) => {
+        const displayTag = displayTagArr[i] || tag;
         const span = document.createElement('span');
         span.className = 't-chip';
-        span.innerText = tag;
+        span.innerText = displayTag;
+        span.dataset.rawTag = tag; // store original for filter logic
         span.onclick = () => {
             if (span.classList.contains('active')) {
                 span.classList.remove('active');
@@ -722,7 +773,7 @@ function renderArchive() {
     })();
 }
 
-function showLegendDetail(name) {
+async function showLegendDetail(name) {
     const unit = rawData.find(u => u.name === name);
     if (!unit) return;
     localStorage.setItem('lastUnit', name);
@@ -731,20 +782,48 @@ function showLegendDetail(name) {
     const rarityBadge = document.getElementById('detail-rarity-badge');
     if (rarityBadge) rarityBadge.innerText = unit.rarity || '';
     const detailName = document.getElementById('detail-name');
-    if (detailName) detailName.innerText = unit.name || '';
+    if (detailName) detailName.innerText = unit.name || ''; // Name tidak ditranslate
+
     const detailNick = document.getElementById('detail-nickname');
-    if (detailNick) detailNick.innerText = unit.nickname ? `"${unit.nickname}"` : "";
     const detailStory = document.getElementById('detail-story');
-    if (detailStory) detailStory.innerText = unit.story || '';
     const tagContainer = document.getElementById('detail-tags-container');
-    if (tagContainer) tagContainer.innerHTML = unit.tags ? unit.tags.split(',').map(t => `<span class="tag" onclick="jumpToTag('${t.trim().replace(/'/g, "\\'")}')">${t.trim()}</span>`).join('') : '';
+
+    // Show page first (no delay for user)
+    UI.showPage('page-3');
+
+    // Set original content immediately
+    if (detailNick) detailNick.innerText = unit.nickname ? `"${unit.nickname}"` : "";
+    if (detailStory) detailStory.innerText = unit.story || '';
+    const rawTags = unit.tags ? unit.tags.split(',').map(t => t.trim()).filter(Boolean) : [];
+    if (tagContainer) tagContainer.innerHTML = rawTags.map(t => `<span class="tag" onclick="jumpToTag('${t.replace(/'/g, "\\'")}')">${t}</span>`).join('');
+
+    // Then translate if English
+    if (currentLang === 'en') {
+        try {
+            const nicknameText = unit.nickname || '';
+            const storyText = unit.story || '';
+
+            const [trNickname, trStory, ...trTags] = await translateMultiple(
+                [nicknameText, storyText, ...rawTags],
+                'en'
+            );
+
+            if (detailNick) detailNick.innerText = trNickname ? `"${trNickname}"` : "";
+            if (detailStory) detailStory.innerText = trStory || storyText;
+            if (tagContainer && trTags.length > 0) {
+                tagContainer.innerHTML = trTags.map((t, i) => `<span class="tag" onclick="jumpToTag('${rawTags[i].replace(/'/g, "\\'")}')">${t || rawTags[i]}</span>`).join('');
+            }
+        } catch(e) {
+            // Keep original content on error
+        }
+    }
+
     const track = document.getElementById('carousel-track');
     if (track) {
         const images = [unit.extra_image_1, unit.extra_image_2, unit.extra_image_3].filter(Boolean);
         const activeIndex = Math.max(0, Math.min(images.length - 1, Math.floor(images.length / 2)));
         track.innerHTML = images.map((img, i) => `<img class="extra-img ${i === activeIndex ? 'active' : ''}" src="${img}" onclick="UI.handleCarousel(this)">`).join('');
     }
-    UI.showPage('page-3');
 }
 
 function jumpToTag(tag) {
@@ -754,7 +833,9 @@ function jumpToTag(tag) {
     filters.tags = [tag];
     renderArchive();
     document.querySelectorAll('.t-chip').forEach(c => {
-        if (c.innerText === tag) c.classList.add('active');
+        // Match by raw tag (dataset) or innerText fallback
+        const rawTag = c.dataset.rawTag || c.innerText;
+        if (rawTag === tag) c.classList.add('active');
         else c.classList.remove('active');
     });
 }
