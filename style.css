@@ -648,9 +648,9 @@ body {
    ══════════════════════════════════════════════ */
 #system-clock, #system-date {
     font-family: 'Orbitron', sans-serif !important;
-    color: rgba(255, 183, 213, 0.85) !important;
-    text-shadow: 0 0 12px rgba(255, 107, 157, 0.4) !important;
-    font-size: 0.72rem !important;
+    color: rgba(var(--accent-rgb), 0.9) !important;
+    text-shadow: 0 0 12px rgba(var(--accent-rgb), 0.4) !important;
+    font-size: 0.9rem !important;
 }
 
 /* ══════════════════════════════════════════════
@@ -660,15 +660,15 @@ body {
 #request-btn,
 #lang-toggle-btn {
     background: rgba(10, 4, 26, 0.88) !important;
-    border: 1.5px solid rgba(255, 183, 213, 0.3) !important;
-    color: rgba(255, 107, 157, 0.9) !important;
+    border: 1.5px solid rgba(var(--accent-rgb), 0.5) !important;
+    color: rgba(var(--accent-rgb), 0.9) !important;
     backdrop-filter: blur(12px) !important;
 }
 #refresh-btn:hover, #request-btn:hover, #lang-toggle-btn:hover {
-    background: linear-gradient(135deg, rgba(255,107,157,0.9), rgba(155,93,229,0.9)) !important;
+    background: rgba(var(--accent-rgb), 0.9) !important;
     border-color: transparent !important;
     color: #fff !important;
-    box-shadow: 0 0 25px rgba(255, 107, 157, 0.5) !important;
+    box-shadow: 0 0 25px rgba(var(--accent-rgb), 0.5) !important;
 }
 
 /* Patch notes area */
@@ -822,7 +822,7 @@ body {
     align-items: center;
     padding: 0 20px;
     font-family: 'Orbitron', sans-serif;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     font-weight: 800;
     color: var(--accent-clr);
     pointer-events: none;
@@ -831,7 +831,7 @@ body {
 
 #system-clock {
     position: fixed;
-    top: 15px;
+    top: 13px;
     left: 20px;
     pointer-events: auto;
     display: block;
@@ -839,7 +839,7 @@ body {
 
 #system-date {
     position: fixed;
-    top: 15px;
+    top: 13px;
     right: 20px;
     pointer-events: auto;
     cursor: pointer;
@@ -1245,8 +1245,8 @@ body {
     max-width: 100%;
     margin: 0;
     position: relative;
-    height: 55vh;
-    min-height: 300px;
+    height: 45vh;
+    min-height: 260px;
     overflow: hidden;
 }
 
@@ -1823,6 +1823,11 @@ body {
     .rpg-btn { font-size: 1.1rem !important; padding: 16px 40px !important; }
     .category-grid { grid-template-columns: repeat(6, 1fr) !important; max-width: 900px !important; padding: 50px 30px 30px !important; }
 
+    /* HUD CLOCK/DATE - bigger on desktop */
+    #system-clock, #system-date { font-size: 1.15rem !important; }
+    #system-clock { top: 14px !important; left: 30px !important; }
+    #system-date { top: 14px !important; right: 30px !important; }
+
     /* PAGE 2 DESKTOP */
     #page-2 { padding-top: 0 !important; }
     #page-2 .page-container { max-width: 1100px !important; padding: 0 30px !important; }
@@ -1838,7 +1843,7 @@ body {
     #page-3 { padding-top: 0 !important; }
     .detail-view { max-width: 100% !important; }
     .detail-layout { flex-direction: row !important; align-items: flex-start !important; min-height: 100vh; gap: 0; }
-    .unit-visual { width: 42% !important; height: 100vh !important; position: sticky !important; top: 0 !important; min-height: 100vh !important; flex-shrink: 0; }
+    .unit-visual { width: 35% !important; height: 100vh !important; position: sticky !important; top: 0 !important; min-height: 100vh !important; flex-shrink: 0; }
     .image-frame { height: 100% !important; border-radius: 0 !important; }
     .image-frame img { height: 100% !important; object-fit: cover !important; }
     .image-frame::after { height: 35% !important; }
@@ -2566,8 +2571,8 @@ body {
         margin-top: 30px !important;
         display: flex !important;
         flex-direction: column !important;
-        align-items: center !important;
-        padding-left: 40px !important;
+        align-items: flex-start !important;
+        padding-left: 20px !important;
     }
     .carousel {
         width: 100% !important;
@@ -2575,7 +2580,7 @@ body {
     }
     .carousel-track {
         gap: 20px !important;
-        justify-content: center !important;
+        justify-content: flex-start !important;
         align-items: center !important;
         padding-left: 0 !important;
     }
@@ -2591,10 +2596,10 @@ body {
         border-width: 2.5px !important;
     }
     .gallery-title {
-        font-size: 0.9rem !important;
+        font-size: 1.05rem !important;
         letter-spacing: 5px !important;
         margin-bottom: 20px !important;
-        text-align: center !important;
+        text-align: left !important;
         width: 100% !important;
     }
 }
