@@ -69,12 +69,12 @@
 }
 
 /* ── CATEGORY THEME COLORS ── */
-.theme-character { --accent-clr: #FF6B9D; --accent-rgb: 255, 107, 157; }
-.theme-monster   { --accent-clr: #9B5DE5; --accent-rgb: 155, 93, 229; }
-.theme-pet       { --accent-clr: #00BBF9; --accent-rgb: 0, 187, 249; }
-.theme-item      { --accent-clr: #FEE440; --accent-rgb: 254, 228, 64; }
-.theme-magic     { --accent-clr: #00F5D4; --accent-rgb: 0, 245, 212; }
-.theme-area      { --accent-clr: #F15BB5; --accent-rgb: 241, 91, 181; }
+.theme-character { --accent-clr: #FF2400; --accent-rgb: 255, 36, 0; }
+.theme-monster   { --accent-clr: #7851A9; --accent-rgb: 120, 81, 169; }
+.theme-pet       { --accent-clr: #FF1493; --accent-rgb: 255, 20, 147; }
+.theme-item      { --accent-clr: #228B22; --accent-rgb: 34, 139, 34; }
+.theme-magic     { --accent-clr: #4169E1; --accent-rgb: 65, 105, 225; }
+.theme-area      { --accent-clr: #DAA520; --accent-rgb: 218, 165, 32; }
 
 /* ── FONT IMPORT (anime/japanese feel) ── */
 @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=M+PLUS+Rounded+1c:wght@400;700;800&family=Orbitron:wght@400;700;900&family=Exo+2:ital,wght@0,300;0,400;0,700;0,800;1,400&display=swap');
@@ -605,8 +605,11 @@ body {
 /* Gallery */
 .gallery-title {
     font-family: 'Orbitron', sans-serif !important;
+    font-size: 0.85rem !important;
     color: rgba(var(--accent-rgb), 0.8) !important;
     letter-spacing: 4px !important;
+    text-align: center !important;
+    width: 100% !important;
 }
 .extra-img {
     border-radius: 14px !important;
@@ -1403,12 +1406,13 @@ body {
 
 .gallery-title {
     font-family: 'Orbitron', sans-serif;
-    font-size: 0.6rem;
+    font-size: 0.85rem;
     color: rgba(var(--accent-rgb), 0.7);
     text-align: center;
     margin-bottom: 14px;
     letter-spacing: 3px;
     text-transform: uppercase;
+    width: 100%;
 }
 
 .carousel { width: 100%; overflow: hidden; padding: 6px 0; }
@@ -1422,7 +1426,7 @@ body {
 }
 
 .extra-img {
-    width: 72px; height: 96px;
+    width: 90px; height: 120px;
     object-fit: cover;
     border-radius: 10px;
     opacity: 0.5;
@@ -1432,7 +1436,7 @@ body {
     flex-shrink: 0;
 }
 .extra-img.active {
-    width: 88px; height: 118px;
+    width: 120px; height: 160px;
     opacity: 1;
     border-color: var(--accent-clr);
     transform: scale(1);
@@ -1847,8 +1851,8 @@ body {
     .tag { font-size: 0.7rem !important; padding: 6px 14px !important; }
     .rpg-box { font-size: 0.95rem !important; padding: 32px 24px 22px !important; }
     .unit-gallery { flex: 1 !important; padding: 0 40px 40px !important; margin: 0 !important; }
-    .extra-img { width: 80px !important; height: 108px !important; }
-    .extra-img.active { width: 100px !important; height: 134px !important; }
+    .extra-img { width: 96px !important; height: 128px !important; }
+    .extra-img.active { width: 124px !important; height: 165px !important; }
 
     /* Rarity badge desktop */
     #detail-rarity-badge { top: 80px !important; right: 20px !important; width: 54px !important; height: 42px !important; font-size: 1.3rem !important; }
@@ -2562,7 +2566,7 @@ body {
         margin-top: 30px !important;
         display: flex !important;
         flex-direction: column !important;
-        align-items: flex-start !important;
+        align-items: center !important;
         padding-left: 40px !important;
     }
     .carousel {
@@ -2571,26 +2575,27 @@ body {
     }
     .carousel-track {
         gap: 20px !important;
-        justify-content: flex-start !important;
+        justify-content: center !important;
         align-items: center !important;
         padding-left: 0 !important;
     }
     .extra-img {
-        width: 120px !important;
-        height: 160px !important;
+        width: 140px !important;
+        height: 186px !important;
         border-radius: 14px !important;
     }
     .extra-img.active {
-        width: 148px !important;
-        height: 198px !important;
+        width: 180px !important;
+        height: 240px !important;
         border-radius: 16px !important;
         border-width: 2.5px !important;
     }
     .gallery-title {
-        font-size: 0.75rem !important;
+        font-size: 0.9rem !important;
         letter-spacing: 5px !important;
         margin-bottom: 20px !important;
-        text-align: left !important;
+        text-align: center !important;
+        width: 100% !important;
     }
 }
 
@@ -2606,12 +2611,12 @@ body {
         letter-spacing: 15px !important;
     }
     .extra-img {
-        width: 140px !important;
-        height: 186px !important;
+        width: 160px !important;
+        height: 213px !important;
     }
     .extra-img.active {
-        width: 170px !important;
-        height: 226px !important;
+        width: 200px !important;
+        height: 266px !important;
     }
 }
 /* Anti-screenshot print block */
