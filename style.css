@@ -1590,28 +1590,10 @@ body {
     to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* Top color accent — shimmer bar */
+/* Top color accent — hidden, clean no line */
 .unit-card::before {
-    content: '' !important;
-    position: absolute !important;
-    top: 0 !important; left: 0 !important; right: 0 !important;
-    height: 3px !important;
-    background: linear-gradient(90deg,
-        transparent 0%,
-        rgba(var(--accent-rgb), 0.6) 25%,
-        rgba(255,255,255,1) 50%,
-        rgba(var(--accent-rgb), 0.6) 75%,
-        transparent 100%
-    ) !important;
-    background-size: 200% 100% !important;
-    animation: shimmerBar 3s ease-in-out infinite !important;
-    z-index: 6 !important;
-    opacity: 0.85 !important;
-}
-
-@keyframes shimmerBar {
-    0%   { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
+    content: none !important;
+    display: none !important;
 }
 
 /* Bottom name plate gradient — deeper, richer */
@@ -1805,12 +1787,65 @@ body {
 
 /* ═══════════════════════════════════════════════════════
    FINAL DESKTOP OVERRIDE — must be LAST in file
-   Ini harus paling bawah biar menang dari semua !important
    ═══════════════════════════════════════════════════════ */
 
 @media (min-width: 1024px) {
 
-    /* PAGE CONTAINER — full width */
+    /* ── PAGE 1: Center everything vertically ── */
+    #page-1 .hero-section {
+        justify-content: center !important;
+        align-items: center !important;
+        padding-top: 0 !important;
+    }
+    .hero-content {
+        transform: translateY(0) !important;
+        margin-bottom: 20px !important;
+        max-width: 720px !important;
+    }
+    .rpg-title {
+        font-size: 4.8rem !important;
+        letter-spacing: 12px !important;
+        margin-top: 0 !important;
+    }
+    .rpg-subtitle {
+        font-size: 1rem !important;
+        letter-spacing: 5px !important;
+        margin-bottom: 8px !important;
+    }
+    .rpg-flavor-text {
+        font-size: 0.92rem !important;
+        max-width: 480px !important;
+        margin: 0 auto 20px !important;
+        line-height: 1.8 !important;
+    }
+    .p1-btns {
+        max-width: 420px !important;
+        gap: 14px !important;
+    }
+    .rpg-btn {
+        font-size: 1.2rem !important;
+        padding: 20px 60px !important;
+        letter-spacing: 3px !important;
+    }
+    .rpg-btn-outline {
+        font-size: 0.9rem !important;
+        padding: 14px 36px !important;
+        letter-spacing: 2px !important;
+    }
+    .tiktok-inline-text {
+        font-size: 0.85rem !important;
+    }
+    .category-grid {
+        grid-template-columns: repeat(6, 1fr) !important;
+        max-width: 980px !important;
+        gap: 18px !important;
+        padding: 55px 40px 40px !important;
+    }
+    .cat-card { padding: 22px 16px !important; }
+    .cat-icon { font-size: 2.2rem !important; }
+    .cat-name { font-size: 0.68rem !important; letter-spacing: 2px !important; }
+
+    /* ── PAGE 2: 6 kolom grid, sticky header ── */
     .page-container {
         max-width: 1160px !important;
         padding: 0 40px !important;
@@ -1818,15 +1853,11 @@ body {
     #page-2 .page-container {
         max-width: 1200px !important;
     }
-
-    /* PAGE 2 GRID — 6 kolom */
     .unit-grid {
         grid-template-columns: repeat(6, 1fr) !important;
         gap: 18px !important;
         padding: 24px 0 140px !important;
     }
-
-    /* PAGE 2 HEADER — full width, sticky */
     .rpg-header {
         position: sticky !important;
         top: 0 !important;
@@ -1835,19 +1866,31 @@ body {
         padding: 20px 30px 0 !important;
     }
 
-    /* PAGE 1 */
-    #page-1 .page-container {
-        max-width: 800px !important;
+    /* ── PAGE 3: Gallery bigger ── */
+    .unit-gallery {
+        padding: 0 50px 60px !important;
     }
-    .rpg-title {
-        font-size: 4.2rem !important;
-        letter-spacing: 10px !important;
-    }
-    .rpg-btn { font-size: 1.1rem !important; padding: 18px 50px !important; }
-    .category-grid {
-        grid-template-columns: repeat(6, 1fr) !important;
-        max-width: 960px !important;
+    .carousel-track {
         gap: 16px !important;
+    }
+    .extra-img {
+        width: 120px !important;
+        height: 160px !important;
+        border-radius: 14px !important;
+    }
+    .extra-img.active {
+        width: 148px !important;
+        height: 198px !important;
+        border-radius: 16px !important;
+        border-width: 2.5px !important;
+    }
+    .gallery-title {
+        font-size: 0.75rem !important;
+        letter-spacing: 5px !important;
+        margin-bottom: 20px !important;
+    }
+    .carousel {
+        padding: 10px 0 !important;
     }
 }
 
@@ -1857,6 +1900,18 @@ body {
     }
     .page-container, #page-2 .page-container {
         max-width: 1400px !important;
+    }
+    .rpg-title {
+        font-size: 5.5rem !important;
+        letter-spacing: 15px !important;
+    }
+    .extra-img {
+        width: 140px !important;
+        height: 186px !important;
+    }
+    .extra-img.active {
+        width: 170px !important;
+        height: 226px !important;
     }
 }
 /* Anti-screenshot print block */
