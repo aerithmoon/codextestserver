@@ -69,12 +69,12 @@
 }
 
 /* ── CATEGORY THEME COLORS ── */
-.theme-character { --accent-clr: #FF2400; --accent-rgb: 255, 36, 0; }
-.theme-monster   { --accent-clr: #7851A9; --accent-rgb: 120, 81, 169; }
-.theme-pet       { --accent-clr: #FF1493; --accent-rgb: 255, 20, 147; }
-.theme-item      { --accent-clr: #228B22; --accent-rgb: 34, 139, 34; }
-.theme-magic     { --accent-clr: #4169E1; --accent-rgb: 65, 105, 225; }
-.theme-area      { --accent-clr: #DAA520; --accent-rgb: 218, 165, 32; }
+.theme-character { --accent-clr: #FF5252; --accent-rgb: 255, 82, 82; }   /* Bright Red */
+.theme-monster   { --accent-clr: #9C6FE4; --accent-rgb: 156, 111, 228; } /* Bright Purple */
+.theme-pet       { --accent-clr: #FF4DB8; --accent-rgb: 255, 77, 184; }  /* Bright Pink */
+.theme-item      { --accent-clr: #4CAF50; --accent-rgb: 76, 175, 80; }   /* Bright Green */
+.theme-magic     { --accent-clr: #5B86E5; --accent-rgb: 91, 134, 229; }  /* Bright Blue */
+.theme-area      { --accent-clr: #E8B84B; --accent-rgb: 232, 184, 75; }  /* Bright Gold */
 
 /* ── FONT IMPORT (anime/japanese feel) ── */
 @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=M+PLUS+Rounded+1c:wght@400;700;800&family=Orbitron:wght@400;700;900&family=Exo+2:ital,wght@0,300;0,400;0,700;0,800;1,400&display=swap');
@@ -648,8 +648,8 @@ body {
    ══════════════════════════════════════════════ */
 #system-clock, #system-date {
     font-family: 'Orbitron', sans-serif !important;
-    color: rgba(var(--accent-rgb), 0.9) !important;
-    text-shadow: 0 0 12px rgba(var(--accent-rgb), 0.4) !important;
+    color: rgba(255, 183, 213, 0.95) !important;
+    text-shadow: 0 0 12px rgba(255, 107, 157, 0.5) !important;
     font-size: 0.9rem !important;
 }
 
@@ -660,15 +660,15 @@ body {
 #request-btn,
 #lang-toggle-btn {
     background: rgba(10, 4, 26, 0.88) !important;
-    border: 1.5px solid rgba(var(--accent-rgb), 0.5) !important;
-    color: rgba(var(--accent-rgb), 0.9) !important;
+    border: 1.5px solid rgba(201, 177, 255, 0.5) !important;
+    color: rgba(255, 183, 213, 0.95) !important;
     backdrop-filter: blur(12px) !important;
 }
 #refresh-btn:hover, #request-btn:hover, #lang-toggle-btn:hover {
-    background: rgba(var(--accent-rgb), 0.9) !important;
+    background: linear-gradient(135deg, rgba(255, 107, 157, 0.9), rgba(155, 93, 229, 0.9)) !important;
     border-color: transparent !important;
     color: #fff !important;
-    box-shadow: 0 0 25px rgba(var(--accent-rgb), 0.5) !important;
+    box-shadow: 0 0 25px rgba(255, 107, 157, 0.5) !important;
 }
 
 /* Patch notes area */
@@ -1146,9 +1146,9 @@ body {
 .r-chip.active, .t-chip.active { background: var(--accent-clr); color: white; border-color: var(--accent-clr); }
 
 .rpg-btn-small {
-    background: rgba(var(--accent-rgb), 0.1);
-    border: 1px solid var(--accent-clr);
-    color: var(--accent-clr);
+    background: rgba(155, 93, 229, 0.15);
+    border: 1px solid rgba(201, 177, 255, 0.6);
+    color: rgba(255, 183, 213, 0.95);
     padding: 8px 15px;
     border-radius: 6px;
     cursor: pointer;
@@ -1157,8 +1157,14 @@ body {
     font-size: 0.7rem;
     font-weight: 700;
 }
+.rpg-btn-small:hover {
+    background: linear-gradient(135deg, rgba(255, 107, 157, 0.9), rgba(155, 93, 229, 0.9));
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 0 15px rgba(255, 107, 157, 0.4);
+}
 
-.rpg-btn-small:active { transform: scale(0.9); background: var(--accent-clr); color: white; }
+.rpg-btn-small:active { transform: scale(0.9); background: linear-gradient(135deg, #FF6B9D, #9B5DE5); color: white; }
 
 /* GRID FIX PAGE 2 */
 .unit-grid {
@@ -1245,8 +1251,8 @@ body {
     max-width: 100%;
     margin: 0;
     position: relative;
-    height: 45vh;
-    min-height: 260px;
+    height: 40vh;
+    min-height: 240px;
     overflow: hidden;
 }
 
@@ -1843,7 +1849,7 @@ body {
     #page-3 { padding-top: 0 !important; }
     .detail-view { max-width: 100% !important; }
     .detail-layout { flex-direction: row !important; align-items: flex-start !important; min-height: 100vh; gap: 0; }
-    .unit-visual { width: 35% !important; height: 100vh !important; position: sticky !important; top: 0 !important; min-height: 100vh !important; flex-shrink: 0; }
+    .unit-visual { width: 30% !important; height: 100vh !important; position: sticky !important; top: 0 !important; min-height: 100vh !important; flex-shrink: 0; }
     .image-frame { height: 100% !important; border-radius: 0 !important; }
     .image-frame img { height: 100% !important; object-fit: cover !important; }
     .image-frame::after { height: 35% !important; }
@@ -1928,9 +1934,9 @@ body {
     width: 38px !important;
     height: 38px !important;
     border-radius: 50% !important;
-    background: var(--secondary-bg) !important;
-    border: 2px solid var(--accent-clr) !important;
-    color: var(--accent-clr) !important;
+    background: rgba(10, 4, 26, 0.88) !important;
+    border: 1.5px solid rgba(201, 177, 255, 0.5) !important;
+    color: rgba(255, 183, 213, 0.95) !important;
     font-size: 1rem !important;
     cursor: pointer !important;
     display: flex !important;
@@ -1939,12 +1945,15 @@ body {
     z-index: 10000 !important;
     pointer-events: auto !important;
     transition: var(--transition) !important;
+    backdrop-filter: blur(12px) !important;
 }
 
 #refresh-btn:hover {
-    background: var(--accent-clr) !important;
+    background: linear-gradient(135deg, rgba(255, 107, 157, 0.9), rgba(155, 93, 229, 0.9)) !important;
+    border-color: transparent !important;
     color: white !important;
     transform: scale(1.1) !important;
+    box-shadow: 0 0 25px rgba(255, 107, 157, 0.5) !important;
 }
 
 #refresh-btn.spinning i {
@@ -2596,11 +2605,12 @@ body {
         border-width: 2.5px !important;
     }
     .gallery-title {
-        font-size: 1.05rem !important;
+        font-size: 1.1rem !important;
         letter-spacing: 5px !important;
         margin-bottom: 20px !important;
-        text-align: left !important;
-        width: 100% !important;
+        /* Center over the 3 images: total width ≈ 140+180+140 + 2*gap(20) = 500px */
+        width: 500px !important;
+        text-align: center !important;
     }
 }
 
