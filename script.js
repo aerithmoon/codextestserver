@@ -102,6 +102,35 @@ function applyTranslations() {
     // Lang toggle button label
     const langBtn = document.getElementById('lang-toggle-btn');
     if (langBtn) langBtn.textContent = t.langBtn;
+
+    // Refresh patch modal content if it's currently open
+    const patchModal = document.getElementById('patch-modal');
+    const patchTextEl = document.getElementById('patch-text');
+    if (patchModal && !patchModal.classList.contains('hidden') && patchTextEl) {
+        const patchContent = {
+            id: `
+                <strong>UPDATE v1.0.8 - REVISED</strong><br><br>
+                - Wallpaper unik baru untuk setiap kategori.<br>
+                - Animasi loading modern (0-100%).<br>
+                - Navigasi otomatis tersembunyi saat scroll ke bawah.<br>
+                - Status halaman tetap tersimpan saat refresh.<br>
+                - Perbaikan kontras teks subtitle dan versi.<br>
+                - Semua efek cahaya dihapus untuk tampilan lebih bersih.<br><br>
+                <em>Sistem telah dioptimalkan sepenuhnya.</em>
+            `,
+            en: `
+                <strong>UPDATE v1.0.8 - REVISED</strong><br><br>
+                - New Unique Wallpapers for every category.<br>
+                - Modern Loading Animation (0-100%).<br>
+                - Auto-hide navigation on scroll down.<br>
+                - Persistent page state on refresh.<br>
+                - Fixed contrast for subtitle and version text.<br>
+                - Removed all glowing effects for a cleaner look.<br><br>
+                <em>System fully optimized.</em>
+            `
+        };
+        patchTextEl.innerHTML = patchContent[currentLang] || patchContent.en;
+    }
 }
 
 function toggleLang() {
@@ -464,16 +493,31 @@ async function init() {
     if (patchBtn) {
         patchBtn.onclick = () => {
             const patchTextEl = document.getElementById('patch-text');
-            if (patchTextEl) patchTextEl.innerHTML = `
-                <strong>UPDATE v1.0.8 - REVISED</strong><br><br>
-                - New Unique Wallpapers for every category.<br>
-                - Modern Loading Animation (0-100%).<br>
-                - Auto-hide navigation on scroll down.<br>
-                - Persistent page state on refresh.<br>
-                - Fixed contrast for subtitle and version text.<br>
-                - Removed all glowing effects for a cleaner look.<br><br>
-                <em>System fully optimized.</em>
-            `;
+            if (patchTextEl) {
+                const patchContent = {
+                    id: `
+                        <strong>UPDATE v1.0.8 - REVISED</strong><br><br>
+                        - Wallpaper unik baru untuk setiap kategori.<br>
+                        - Animasi loading modern (0-100%).<br>
+                        - Navigasi otomatis tersembunyi saat scroll ke bawah.<br>
+                        - Status halaman tetap tersimpan saat refresh.<br>
+                        - Perbaikan kontras teks subtitle dan versi.<br>
+                        - Semua efek cahaya dihapus untuk tampilan lebih bersih.<br><br>
+                        <em>Sistem telah dioptimalkan sepenuhnya.</em>
+                    `,
+                    en: `
+                        <strong>UPDATE v1.0.8 - REVISED</strong><br><br>
+                        - New Unique Wallpapers for every category.<br>
+                        - Modern Loading Animation (0-100%).<br>
+                        - Auto-hide navigation on scroll down.<br>
+                        - Persistent page state on refresh.<br>
+                        - Fixed contrast for subtitle and version text.<br>
+                        - Removed all glowing effects for a cleaner look.<br><br>
+                        <em>System fully optimized.</em>
+                    `
+                };
+                patchTextEl.innerHTML = patchContent[currentLang] || patchContent.en;
+            }
             if (UI.patchModal) UI.patchModal.classList.remove('hidden');
         };
     }
