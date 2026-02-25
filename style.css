@@ -1324,31 +1324,11 @@ body {
 
 /* ── DECORATIVE CORNER ORNAMENTS via box-shadow trick ── */
 .rpg-header::before {
-    content: '';
-    position: absolute;
-    bottom: -40px; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg,
-        transparent 0%,
-        rgba(var(--accent-rgb), 0.6) 30%,
-        rgba(255,255,255,0.3) 50%,
-        rgba(var(--accent-rgb), 0.6) 70%,
-        transparent 100%
-    );
-    pointer-events: none;
-    z-index: 0;
+    content: none;
+    display: none;
 }
 
-/* ── CATEGORY BADGE di kiri header ── */
-.p2-title-wrap::before {
-    content: '✦';
-    display: inline-block;
-    color: rgba(var(--accent-rgb), 0.5);
-    font-size: 0.6rem;
-    margin-right: 6px;
-    vertical-align: middle;
-    animation: pulseDot 3s ease-in-out infinite;
-}
+.p2-title-wrap::before { content: none; display: none; }
 
 /* Star field — halus dan indah */
 #page-2::before {
@@ -1572,7 +1552,7 @@ body {
         rgba(15, 3, 38, 0.98) 60%,
         rgba(25, 6, 50, 0.96) 100%
     ) !important;
-    border: 1px solid rgba(var(--accent-rgb), 0.45) !important;
+    border: none !important;
     border-radius: 18px !important;
     overflow: hidden !important;
     cursor: pointer !important;
@@ -1866,12 +1846,23 @@ body {
         padding: 20px 30px 0 !important;
     }
 
-    /* ── PAGE 3: Gallery bigger ── */
+    /* ── PAGE 3: Gallery bigger, centered, pushed down ── */
     .unit-gallery {
-        padding: 0 50px 60px !important;
+        padding: 40px 50px 60px !important;
+        margin-top: 20px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    .carousel {
+        width: 100% !important;
+        padding: 10px 0 !important;
     }
     .carousel-track {
-        gap: 16px !important;
+        gap: 20px !important;
+        justify-content: center !important;
+        align-items: center !important;
     }
     .extra-img {
         width: 120px !important;
@@ -1888,9 +1879,7 @@ body {
         font-size: 0.75rem !important;
         letter-spacing: 5px !important;
         margin-bottom: 20px !important;
-    }
-    .carousel {
-        padding: 10px 0 !important;
+        text-align: center !important;
     }
 }
 
