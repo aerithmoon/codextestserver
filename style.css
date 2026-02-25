@@ -1802,6 +1802,63 @@ body {
     }
 }
 
+
+/* ═══════════════════════════════════════════════════════
+   FINAL DESKTOP OVERRIDE — must be LAST in file
+   Ini harus paling bawah biar menang dari semua !important
+   ═══════════════════════════════════════════════════════ */
+
+@media (min-width: 1024px) {
+
+    /* PAGE CONTAINER — full width */
+    .page-container {
+        max-width: 1160px !important;
+        padding: 0 40px !important;
+    }
+    #page-2 .page-container {
+        max-width: 1200px !important;
+    }
+
+    /* PAGE 2 GRID — 6 kolom */
+    .unit-grid {
+        grid-template-columns: repeat(6, 1fr) !important;
+        gap: 18px !important;
+        padding: 24px 0 140px !important;
+    }
+
+    /* PAGE 2 HEADER — full width, sticky */
+    .rpg-header {
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 100 !important;
+        border-radius: 0 !important;
+        padding: 20px 30px 0 !important;
+    }
+
+    /* PAGE 1 */
+    #page-1 .page-container {
+        max-width: 800px !important;
+    }
+    .rpg-title {
+        font-size: 4.2rem !important;
+        letter-spacing: 10px !important;
+    }
+    .rpg-btn { font-size: 1.1rem !important; padding: 18px 50px !important; }
+    .category-grid {
+        grid-template-columns: repeat(6, 1fr) !important;
+        max-width: 960px !important;
+        gap: 16px !important;
+    }
+}
+
+@media (min-width: 1400px) {
+    .unit-grid {
+        grid-template-columns: repeat(7, 1fr) !important;
+    }
+    .page-container, #page-2 .page-container {
+        max-width: 1400px !important;
+    }
+}
 /* Anti-screenshot print block */
 @media print {
     body * { visibility: hidden !important; }
