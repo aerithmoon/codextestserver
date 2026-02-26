@@ -1861,10 +1861,10 @@ body {
     .unit-bio h3 { font-size: 1rem !important; }
     .detail-tags { justify-content: center !important; gap: 10px !important; }
     .tag { font-size: 0.7rem !important; padding: 6px 14px !important; }
-    .rpg-box { font-size: 0.95rem !important; padding: 32px 24px 22px !important; }
+    .rpg-box { font-size: 1.05rem !important; padding: 44px 32px 30px !important; }
     .unit-gallery { flex: 1 !important; padding: 0 40px 40px !important; margin: 0 !important; }
-    .extra-img { width: 96px !important; height: 128px !important; }
-    .extra-img.active { width: 124px !important; height: 165px !important; }
+    .extra-img { width: 165px !important; height: 220px !important; }
+    .extra-img.active { width: 210px !important; height: 280px !important; }
 
     /* Rarity badge desktop */
     #detail-rarity-badge { top: 80px !important; right: 20px !important; width: 54px !important; height: 42px !important; font-size: 1.3rem !important; }
@@ -2588,29 +2588,41 @@ body {
         padding: 10px 0 !important;
     }
     .carousel-track {
-        gap: 20px !important;
+        gap: 22px !important;
         justify-content: flex-start !important;
         align-items: center !important;
         padding-left: 0 !important;
     }
     .extra-img {
-        width: 140px !important;
-        height: 186px !important;
+        width: 165px !important;
+        height: 220px !important;
         border-radius: 14px !important;
     }
     .extra-img.active {
-        width: 180px !important;
-        height: 240px !important;
+        width: 210px !important;
+        height: 280px !important;
         border-radius: 16px !important;
-        border-width: 2.5px !important;
+        border-width: 3px !important;
     }
     .gallery-title {
-        font-size: 1.3rem !important;
-        letter-spacing: 5px !important;
-        margin-bottom: 20px !important;
-        /* Center over the 3 images: total width ≈ 140+180+140 + 2*gap(20) = 500px */
-        width: 500px !important;
+        font-size: 1.9rem !important;
+        letter-spacing: 6px !important;
+        margin-bottom: 24px !important;
+        width: 600px !important;
         text-align: center !important;
+    }
+    /* ── PAGE 3: Lore/Story box bigger on desktop ── */
+    .rpg-box {
+        font-size: 1.05rem !important;
+        padding: 44px 32px 30px !important;
+        margin-top: 20px !important;
+        line-height: 1.9 !important;
+    }
+    .box-header {
+        font-size: 0.75rem !important;
+        padding: 5px 28px !important;
+        letter-spacing: 3px !important;
+        top: -16px !important;
     }
 }
 
@@ -2626,12 +2638,16 @@ body {
         letter-spacing: 15px !important;
     }
     .extra-img {
-        width: 160px !important;
-        height: 213px !important;
+        width: 185px !important;
+        height: 246px !important;
     }
     .extra-img.active {
-        width: 200px !important;
-        height: 266px !important;
+        width: 230px !important;
+        height: 306px !important;
+    }
+    .gallery-title {
+        font-size: 2.1rem !important;
+        width: 660px !important;
     }
 }
 /* Anti-screenshot print block */
