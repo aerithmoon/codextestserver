@@ -1862,9 +1862,9 @@ body {
     .detail-tags { justify-content: center !important; gap: 10px !important; }
     .tag { font-size: 0.7rem !important; padding: 6px 14px !important; }
     .rpg-box { font-size: 1.05rem !important; padding: 44px 32px 30px !important; margin-top: 32px !important; }
-    .unit-gallery { flex: 1 !important; padding: 0 20px 40px !important; margin: 0 !important; }
-    .extra-img { width: 120px !important; height: 160px !important; }
-    .extra-img.active { width: 155px !important; height: 207px !important; }
+    .unit-gallery { flex: 1 !important; padding: 0 10px 40px 40px !important; margin: 0 !important; }
+    .extra-img { width: 118px !important; height: 157px !important; }
+    .extra-img.active { width: 152px !important; height: 202px !important; }
 
     /* Rarity badge desktop */
     #detail-rarity-badge { top: 80px !important; right: 20px !important; width: 54px !important; height: 42px !important; font-size: 1.3rem !important; }
@@ -2542,46 +2542,48 @@ body {
         padding: 20px 30px 0 !important;
     }
 
-    /* ── PAGE 3: Gallery shifted left, sized to fit page ── */
+    /* ── PAGE 3: Desktop gallery — no overflow cut, centered title, shift right ── */
     .unit-gallery {
-        padding: 60px 10px 60px 10px !important;
+        padding: 60px 10px 60px 40px !important;
         margin-top: 20px !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: flex-start !important;
-        overflow: hidden !important;
+        overflow: visible !important;
     }
     .carousel {
         width: 100% !important;
-        overflow: hidden !important;
+        overflow: visible !important;
         padding: 10px 0 !important;
     }
     .carousel-track {
-        gap: 14px !important;
+        gap: 16px !important;
         justify-content: flex-start !important;
         align-items: center !important;
         padding-left: 0 !important;
         flex-wrap: nowrap !important;
+        overflow: visible !important;
     }
     .extra-img {
-        width: 108px !important;
-        height: 144px !important;
+        width: 118px !important;
+        height: 157px !important;
         border-radius: 12px !important;
         flex-shrink: 0 !important;
     }
     .extra-img.active {
-        width: 140px !important;
-        height: 186px !important;
+        width: 152px !important;
+        height: 202px !important;
         border-radius: 14px !important;
         border-width: 2.5px !important;
     }
+    /* gallery-title: centered over 3 images total width
+       = 118 + 16 + 152 + 16 + 118 = 420px */
     .gallery-title {
-        font-size: 1.2rem !important;
+        font-size: 1.35rem !important;
         letter-spacing: 5px !important;
-        margin-bottom: 16px !important;
-        width: auto !important;
-        max-width: 100% !important;
-        text-align: left !important;
+        margin-bottom: 18px !important;
+        width: 420px !important;
+        text-align: center !important;
     }
     /* ── PAGE 3: Lore/Story box bigger + more spacing on desktop ── */
     .rpg-box {
@@ -2610,16 +2612,18 @@ body {
         letter-spacing: 15px !important;
     }
     .extra-img {
-        width: 140px !important;
-        height: 186px !important;
+        width: 135px !important;
+        height: 180px !important;
     }
     .extra-img.active {
-        width: 175px !important;
-        height: 233px !important;
+        width: 170px !important;
+        height: 226px !important;
     }
     .gallery-title {
-        font-size: 1.6rem !important;
-        width: auto !important;
+        font-size: 1.5rem !important;
+        /* 135 + 16 + 170 + 16 + 135 = 472px */
+        width: 472px !important;
+        text-align: center !important;
     }
 }
 /* Anti-screenshot print block */
