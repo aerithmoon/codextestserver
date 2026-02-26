@@ -1247,13 +1247,14 @@ body {
 }
 
 .unit-visual {
-    width: 100%;
+    width: calc(100% - 24px);
     max-width: 100%;
-    margin: 0;
+    margin: 0 12px;
     position: relative;
     height: 40vh;
     min-height: 240px;
     overflow: hidden;
+    border-radius: 12px;
 }
 
 .image-frame {
@@ -1849,13 +1850,13 @@ body {
     #page-3 { padding-top: 0 !important; }
     .detail-view { max-width: 100% !important; }
     .detail-layout { flex-direction: row !important; align-items: flex-start !important; min-height: 100vh; gap: 0; }
-    .unit-visual { width: 30% !important; height: 100vh !important; position: sticky !important; top: 0 !important; min-height: 100vh !important; flex-shrink: 0; }
+    .unit-visual { width: 30% !important; height: 100vh !important; position: sticky !important; top: 0 !important; min-height: 100vh !important; flex-shrink: 0; padding-top: 40px !important; box-sizing: border-box !important; margin: 0 !important; border-radius: 0 !important; }
     .image-frame { height: 100% !important; border-radius: 0 !important; }
     .image-frame img { height: 100% !important; object-fit: cover !important; }
     .image-frame::after { height: 35% !important; }
 
     /* Right column */
-    .unit-bio { flex: 1 !important; padding: 80px 40px 30px !important; margin-top: 0 !important; text-align: center !important; min-height: 100vh; }
+    .unit-bio { flex: 1 !important; padding: 80px 40px 30px 70px !important; margin-top: 0 !important; text-align: center !important; min-height: 100vh; }
     .unit-bio h1 { font-size: 2.2rem !important; margin-top: 0 !important; }
     .unit-bio h3 { font-size: 1rem !important; }
     .detail-tags { justify-content: center !important; gap: 10px !important; }
@@ -2574,14 +2575,13 @@ body {
         padding: 20px 30px 0 !important;
     }
 
-    /* ── PAGE 3: Gallery bigger, pushed further down, slightly left ── */
+    /* ── PAGE 3: Gallery bigger, pushed further down, shifted right ── */
     .unit-gallery {
-        padding: 80px 20px 60px 0 !important;
+        padding: 80px 20px 60px 60px !important;
         margin-top: 30px !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: flex-start !important;
-        padding-left: 20px !important;
     }
     .carousel {
         width: 100% !important;
@@ -2605,7 +2605,7 @@ body {
         border-width: 2.5px !important;
     }
     .gallery-title {
-        font-size: 1.1rem !important;
+        font-size: 1.3rem !important;
         letter-spacing: 5px !important;
         margin-bottom: 20px !important;
         /* Center over the 3 images: total width ≈ 140+180+140 + 2*gap(20) = 500px */
