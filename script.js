@@ -136,6 +136,9 @@ function applyTranslations() {
 function toggleLang() {
     currentLang = currentLang === 'id' ? 'en' : 'id';
     localStorage.setItem('lang', currentLang);
+    // Bersihkan cache translate agar selalu fresh saat ganti bahasa
+    translationCache.en = {};
+    translationCache.id = {};
     applyTranslations();
     // Re-render page 3 detail if currently on page 3
     const lastUnit = localStorage.getItem('lastUnit');
@@ -159,10 +162,13 @@ async function translateText(text, targetLang) {
     const cacheKey = text.trim();
     if (translationCache[targetLang][cacheKey]) return translationCache[targetLang][cacheKey];
     try {
-        const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=id|en`;
-        const res = await fetch(url);
+        // Buat race antara fetch dan timeout 8 detik
+        const fetchPromise = fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=id|en`);
+        const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 8000));
+        const res = await Promise.race([fetchPromise, timeoutPromise]);
         const data = await res.json();
         const translated = data?.responseData?.translatedText || text;
+        // Hanya cache jika hasil berbeda dari input (benar-benar diterjemahkan)
         translationCache[targetLang][cacheKey] = translated;
         return translated;
     } catch (e) {
@@ -172,7 +178,13 @@ async function translateText(text, targetLang) {
 
 async function translateMultiple(texts, targetLang) {
     if (targetLang === 'id') return texts;
-    return Promise.all(texts.map(t => translateText(t, targetLang)));
+    // Jalankan secara berurutan (bukan parallel) untuk menghindari rate limit API
+    const results = [];
+    for (const t of texts) {
+        const result = await translateText(t, targetLang);
+        results.push(result);
+    }
+    return results;
 }
 
 
@@ -843,6 +855,12 @@ async function showLegendDetail(name) {
 
     // Then translate if English
     if (currentLang === 'en') {
+        // Tampilkan loading indicator di nickname dan story
+        if (detailNick && unit.nickname) detailNick.style.opacity = '0.5';
+        if (detailStory) {
+            detailStory.style.opacity = '0.5';
+            detailStory.dataset.translating = '1';
+        }
         try {
             const nicknameText = unit.nickname || '';
             const storyText = unit.story || '';
@@ -852,11 +870,23 @@ async function showLegendDetail(name) {
                 'en'
             );
 
-            if (detailNick) detailNick.innerText = trNickname ? `"${trNickname}"` : "";
-            if (detailStory) detailStory.innerText = trStory || storyText;
+            if (detailNick) {
+                detailNick.innerText = trNickname ? `"${trNickname}"` : "";
+                detailNick.style.opacity = '1';
+            }
+            if (detailStory) {
+                detailStory.innerText = trStory || storyText;
+                detailStory.style.opacity = '1';
+                delete detailStory.dataset.translating;
+            }
             // Tags are NOT translated (kept as original rawTags)
         } catch(e) {
-            // Keep original content on error
+            // Kembalikan opacity ke normal jika error
+            if (detailNick) detailNick.style.opacity = '1';
+            if (detailStory) {
+                detailStory.style.opacity = '1';
+                delete detailStory.dataset.translating;
+            }
         }
     }
 
