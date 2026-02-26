@@ -847,16 +847,14 @@ async function showLegendDetail(name) {
             const nicknameText = unit.nickname || '';
             const storyText = unit.story || '';
 
-            const [trNickname, trStory, ...trTags] = await translateMultiple(
-                [nicknameText, storyText, ...rawTags],
+            const [trNickname, trStory] = await translateMultiple(
+                [nicknameText, storyText],
                 'en'
             );
 
             if (detailNick) detailNick.innerText = trNickname ? `"${trNickname}"` : "";
             if (detailStory) detailStory.innerText = trStory || storyText;
-            if (tagContainer && trTags.length > 0) {
-                tagContainer.innerHTML = trTags.map((t, i) => `<span class="tag" onclick="jumpToTag('${rawTags[i].replace(/'/g, "\\'")}')">${t || rawTags[i]}</span>`).join('');
-            }
+            // Tags are NOT translated (kept as original rawTags)
         } catch(e) {
             // Keep original content on error
         }
