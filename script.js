@@ -6,186 +6,8 @@ const CONFIG = {
 };
 
 let rawData = [];
-/* ═══════════════════════════════════
-   i18n — TRANSLATION SYSTEM ID / EN
-   ═══════════════════════════════════ */
-let currentLang = localStorage.getItem('lang') || 'id';
 
-const TRANSLATIONS = {
-    id: {
-        enterWorld:     'MASUK DUNIA',
-        patchNotes:     'CATATAN PATCH',
-        subtitle:       'Selami Dunia Legenda. Pilih takdirmu.',
-        flavorText:     'Legenda kuno menunggumu. Jelajahi arsip dan temukan jalanmu.',
-        searchPlaceholder: 'Cari legend...',
-        filterRarity:   'RARITAS',
-        filterTags:     'TAG',
-        resetFilter:    'Reset',
-        selectRealm:    'PILIH DUNIA',
-        close:          'TUTUP',
-        loreHeader:     'LORE / KISAH',
-        galleryTitle:   'GALERI',
-        patchTitle:     'CATATAN PATCH',
-        langBtn:        'EN',
-        catCharacter:   'KARAKTER',
-        catMonster:     'MONSTER',
-        catPet:         'PET',
-        catItem:        'ITEM',
-        catMagic:       'SIHIR',
-        catArea:        'AREA',
-    },
-    en: {
-        enterWorld:     'ENTER WORLD',
-        patchNotes:     'PATCH NOTES',
-        subtitle:       'Dive into the World of Legends. Choose your destiny.',
-        flavorText:     'Ancient legends are waiting for your command. Explore the archives and find your path.',
-        searchPlaceholder: 'Search legend...',
-        filterRarity:   'RARITY',
-        filterTags:     'TAGS',
-        resetFilter:    'Reset',
-        selectRealm:    'SELECT REALM',
-        close:          'CLOSE',
-        loreHeader:     'LORE / STORY',
-        galleryTitle:   'GALLERY',
-        patchTitle:     'PATCH NOTES',
-        langBtn:        'ID',
-        catCharacter:   'CHARACTER',
-        catMonster:     'MONSTER',
-        catPet:         'PET',
-        catItem:        'ITEM',
-        catMagic:       'MAGIC',
-        catArea:        'AREA',
-    }
-};
 
-function applyTranslations() {
-    const t = TRANSLATIONS[currentLang];
-
-    // Page 1
-    const startBtn = document.getElementById('start-btn');
-    if (startBtn) startBtn.textContent = t.enterWorld;
-    const patchBtn = document.getElementById('patch-btn');
-    if (patchBtn) patchBtn.textContent = t.patchNotes;
-    const subtitle = document.querySelector('.rpg-subtitle');
-    if (subtitle) subtitle.textContent = t.subtitle;
-    const flavor = document.querySelector('.rpg-flavor-text');
-    if (flavor) flavor.textContent = t.flavorText;
-
-    // Page 2 search
-    const searchInput = document.getElementById('unit-search');
-    if (searchInput) searchInput.placeholder = t.searchPlaceholder;
-
-    // Filter labels
-    const filterLabels = document.querySelectorAll('.filter-section label');
-    if (filterLabels[0]) filterLabels[0].textContent = t.filterRarity;
-    if (filterLabels[1]) filterLabels[1].textContent = t.filterTags;
-
-    // Page 3 lore box header
-    const boxHeader = document.querySelector('.box-header');
-    if (boxHeader) boxHeader.textContent = t.loreHeader;
-
-    // Gallery title
-    const galleryTitle = document.querySelector('.gallery-title');
-    if (galleryTitle) galleryTitle.textContent = t.galleryTitle;
-
-    // Modal titles
-    const modalTitle = document.querySelector('#category-modal .modal-content h3');
-    if (modalTitle) modalTitle.textContent = t.selectRealm;
-    const patchModalTitle = document.querySelector('#patch-modal .modal-content h3');
-    if (patchModalTitle) patchModalTitle.textContent = t.patchTitle;
-
-    // Close buttons
-    document.querySelectorAll('#close-modal, #close-patch, #close-calendar').forEach(btn => {
-        if (btn) btn.textContent = t.close;
-    });
-
-    // Lang toggle button label
-    const langBtn = document.getElementById('lang-toggle-btn');
-    if (langBtn) langBtn.textContent = t.langBtn;
-
-    // Refresh patch modal content if it's currently open
-    const patchModal = document.getElementById('patch-modal');
-    const patchTextEl = document.getElementById('patch-text');
-    if (patchModal && !patchModal.classList.contains('hidden') && patchTextEl) {
-        const patchContent = {
-            id: `
-                <strong>UPDATE v1.0.8 - REVISED</strong><br><br>
-                - Wallpaper unik baru untuk setiap kategori.<br>
-                - Animasi loading modern (0-100%).<br>
-                - Navigasi otomatis tersembunyi saat scroll ke bawah.<br>
-                - Status halaman tetap tersimpan saat refresh.<br>
-                - Perbaikan kontras teks subtitle dan versi.<br>
-                - Semua efek cahaya dihapus untuk tampilan lebih bersih.<br><br>
-                <em>Sistem telah dioptimalkan sepenuhnya.</em>
-            `,
-            en: `
-                <strong>UPDATE v1.0.8 - REVISED</strong><br><br>
-                - New Unique Wallpapers for every category.<br>
-                - Modern Loading Animation (0-100%).<br>
-                - Auto-hide navigation on scroll down.<br>
-                - Persistent page state on refresh.<br>
-                - Fixed contrast for subtitle and version text.<br>
-                - Removed all glowing effects for a cleaner look.<br><br>
-                <em>System fully optimized.</em>
-            `
-        };
-        patchTextEl.innerHTML = patchContent[currentLang] || patchContent.en;
-    }
-}
-
-function toggleLang() {
-    currentLang = currentLang === 'id' ? 'en' : 'id';
-    localStorage.setItem('lang', currentLang);
-    // Bersihkan cache translate agar selalu fresh saat ganti bahasa
-    translationCache.en = {};
-    translationCache.id = {};
-    applyTranslations();
-    // Re-render page 3 detail if currently on page 3
-    const lastUnit = localStorage.getItem('lastUnit');
-    const page3 = document.getElementById('page-3');
-    if (lastUnit && page3 && page3.classList.contains('active')) {
-        showLegendDetail(lastUnit);
-    }
-    // Re-populate tags in filter panel
-    populateTags();
-}
-
-/* ═══════════════════════════════════════
-   TRANSLATE ENGINE — MyMemory Free API
-   Cache: translationCache[lang][text]
-   ═══════════════════════════════════════ */
-const translationCache = { en: {}, id: {} };
-
-async function translateText(text, targetLang) {
-    if (!text || !text.trim()) return text;
-    if (targetLang === 'id') return text; // Source is already ID
-    const cacheKey = text.trim();
-    if (translationCache[targetLang][cacheKey]) return translationCache[targetLang][cacheKey];
-    try {
-        // Buat race antara fetch dan timeout 8 detik
-        const fetchPromise = fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=id|en`);
-        const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 8000));
-        const res = await Promise.race([fetchPromise, timeoutPromise]);
-        const data = await res.json();
-        const translated = data?.responseData?.translatedText || text;
-        // Hanya cache jika hasil berbeda dari input (benar-benar diterjemahkan)
-        translationCache[targetLang][cacheKey] = translated;
-        return translated;
-    } catch (e) {
-        return text; // fallback: return original
-    }
-}
-
-async function translateMultiple(texts, targetLang) {
-    if (targetLang === 'id') return texts;
-    // Jalankan secara berurutan (bukan parallel) untuk menghindari rate limit API
-    const results = [];
-    for (const t of texts) {
-        const result = await translateText(t, targetLang);
-        results.push(result);
-    }
-    return results;
-}
 
 
 let currentCat = localStorage.getItem('currentCat') || 'Character';
@@ -506,29 +328,16 @@ async function init() {
         patchBtn.onclick = () => {
             const patchTextEl = document.getElementById('patch-text');
             if (patchTextEl) {
-                const patchContent = {
-                    id: `
-                        <strong>UPDATE v1.0.8 - REVISED</strong><br><br>
-                        - Wallpaper unik baru untuk setiap kategori.<br>
-                        - Animasi loading modern (0-100%).<br>
-                        - Navigasi otomatis tersembunyi saat scroll ke bawah.<br>
-                        - Status halaman tetap tersimpan saat refresh.<br>
-                        - Perbaikan kontras teks subtitle dan versi.<br>
-                        - Semua efek cahaya dihapus untuk tampilan lebih bersih.<br><br>
-                        <em>Sistem telah dioptimalkan sepenuhnya.</em>
-                    `,
-                    en: `
-                        <strong>UPDATE v1.0.8 - REVISED</strong><br><br>
-                        - New Unique Wallpapers for every category.<br>
-                        - Modern Loading Animation (0-100%).<br>
-                        - Auto-hide navigation on scroll down.<br>
-                        - Persistent page state on refresh.<br>
-                        - Fixed contrast for subtitle and version text.<br>
-                        - Removed all glowing effects for a cleaner look.<br><br>
-                        <em>System fully optimized.</em>
-                    `
-                };
-                patchTextEl.innerHTML = patchContent[currentLang] || patchContent.en;
+                patchTextEl.innerHTML = `
+                    <strong>UPDATE v1.0.8 - REVISED</strong><br><br>
+                    - Wallpaper unik baru untuk setiap kategori.<br>
+                    - Animasi loading modern (0-100%).<br>
+                    - Navigasi otomatis tersembunyi saat scroll ke bawah.<br>
+                    - Status halaman tetap tersimpan saat refresh.<br>
+                    - Perbaikan kontras teks subtitle dan versi.<br>
+                    - Semua efek cahaya dihapus untuk tampilan lebih bersih.<br><br>
+                    <em>Sistem telah dioptimalkan sepenuhnya.</em>
+                `;
             }
             if (UI.patchModal) UI.patchModal.classList.remove('hidden');
         };
@@ -619,12 +428,7 @@ async function init() {
     setInterval(() => UI.updateClock(), 1000);
     UI.updateClock();
 
-    // Lang toggle button
-    const langToggleBtn = document.getElementById('lang-toggle-btn');
-    if (langToggleBtn) langToggleBtn.onclick = () => toggleLang();
-
-    // Apply translations on load
-    applyTranslations();
+    // Apply translations on load — REMOVED (translate feature dihapus)
 
     // ── BUTTON REQUEST hanya muncul di page-1 — dikelola oleh showPage() ──
     // JANGAN set display di sini agar tidak override logic showPage()
@@ -743,7 +547,7 @@ function selectRealm(cat, show = true) {
     if (show) UI.showPage('page-2');
 }
 
-async function populateTags() {
+function populateTags() {
     const tags = new Set();
     rawData.filter(u => (u.category || '').trim().toLowerCase() === currentCat.trim().toLowerCase()).forEach(u => {
         if (u.tags) u.tags.split(',').forEach(t => tags.add(t.trim()));
@@ -754,22 +558,11 @@ async function populateTags() {
 
     const rawTagArr = Array.from(tags);
 
-    // Translate tags if EN
-    let displayTagArr = rawTagArr;
-    if (currentLang === 'en' && rawTagArr.length > 0) {
-        try {
-            displayTagArr = await translateMultiple(rawTagArr, 'en');
-        } catch(e) {
-            displayTagArr = rawTagArr;
-        }
-    }
-
-    rawTagArr.forEach((tag, i) => {
-        const displayTag = displayTagArr[i] || tag;
+    rawTagArr.forEach((tag) => {
         const span = document.createElement('span');
         span.className = 't-chip';
-        span.innerText = displayTag;
-        span.dataset.rawTag = tag; // store original for filter logic
+        span.innerText = tag;
+        span.dataset.rawTag = tag;
         span.onclick = () => {
             if (span.classList.contains('active')) {
                 span.classList.remove('active');
@@ -829,7 +622,7 @@ function renderArchive() {
     })();
 }
 
-async function showLegendDetail(name) {
+function showLegendDetail(name) {
     const unit = rawData.find(u => u.name === name);
     if (!unit) return;
     localStorage.setItem('lastUnit', name);
@@ -847,48 +640,11 @@ async function showLegendDetail(name) {
     // Show page first (no delay for user)
     UI.showPage('page-3');
 
-    // Set original content immediately
+    // Set original content
     if (detailNick) detailNick.innerText = unit.nickname ? `"${unit.nickname}"` : "";
     if (detailStory) detailStory.innerText = unit.story || '';
     const rawTags = unit.tags ? unit.tags.split(',').map(t => t.trim()).filter(Boolean) : [];
     if (tagContainer) tagContainer.innerHTML = rawTags.map(t => `<span class="tag" onclick="jumpToTag('${t.replace(/'/g, "\\'")}')">${t}</span>`).join('');
-
-    // Then translate if English
-    if (currentLang === 'en') {
-        // Tampilkan loading indicator di nickname dan story
-        if (detailNick && unit.nickname) detailNick.style.opacity = '0.5';
-        if (detailStory) {
-            detailStory.style.opacity = '0.5';
-            detailStory.dataset.translating = '1';
-        }
-        try {
-            const nicknameText = unit.nickname || '';
-            const storyText = unit.story || '';
-
-            const [trNickname, trStory] = await translateMultiple(
-                [nicknameText, storyText],
-                'en'
-            );
-
-            if (detailNick) {
-                detailNick.innerText = trNickname ? `"${trNickname}"` : "";
-                detailNick.style.opacity = '1';
-            }
-            if (detailStory) {
-                detailStory.innerText = trStory || storyText;
-                detailStory.style.opacity = '1';
-                delete detailStory.dataset.translating;
-            }
-            // Tags are NOT translated (kept as original rawTags)
-        } catch(e) {
-            // Kembalikan opacity ke normal jika error
-            if (detailNick) detailNick.style.opacity = '1';
-            if (detailStory) {
-                detailStory.style.opacity = '1';
-                delete detailStory.dataset.translating;
-            }
-        }
-    }
 
     const track = document.getElementById('carousel-track');
     if (track) {
