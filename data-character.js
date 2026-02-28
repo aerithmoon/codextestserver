@@ -12,7 +12,7 @@ var DATA_CHARACTER = [
     name: "Emerald Knight",
     nickname: "The Jade Sword",
     rarity: "S",                              // S / A / B / C / D
-    main_image_url: "data image/https://github.com/aerithmoon/codextestserver/blob/main/data%20image/CHARACTER/EMERALD%20(1).png",
+    main_image_url: "data image/CHARACTER/EMERALD (1).png",
     extra_image_1:  "data image/EMERALD (2).png",
     extra_image_2:  "data image/EMERALD (3).png",
     extra_image_3:  "data image/EMERALD (4).png",
