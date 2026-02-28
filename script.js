@@ -1,7 +1,6 @@
 /* CONSOLIDATED RPG SCRIPT SYSTEM - REVISED */
 
 const CONFIG = {
-    csvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTIz5r4BkhocZryD6Ju2UGYVWyEKXAvhhqS94Hm6-yMyegyjQM-MV6j0-mDnujDN72oLjPNCyfBlUsZ/pub?gid=0&single=true&output=csv',
     categories: ['Character', 'Monster', 'Pet', 'Item', 'Magic', 'Area']
 };
 
@@ -164,28 +163,19 @@ const UI = {
 
 async function loadRealmData() {
     try {
-        if (CONFIG.csvUrl.includes('S1p_S1p')) {
-            rawData = getMockArchive();
-        } else {
-            // Timeout 8 detik — kalau tidak ada response, fallback ke mock data
-            const controller = new AbortController();
-            const timeout = setTimeout(() => controller.abort(), 8000);
+        // Gabungkan semua 6 file data kategori
+        const all = [
+            ...(typeof DATA_CHARACTER !== 'undefined' ? DATA_CHARACTER : []),
+            ...(typeof DATA_MONSTER   !== 'undefined' ? DATA_MONSTER   : []),
+            ...(typeof DATA_PET       !== 'undefined' ? DATA_PET       : []),
+            ...(typeof DATA_ITEM      !== 'undefined' ? DATA_ITEM      : []),
+            ...(typeof DATA_MAGIC     !== 'undefined' ? DATA_MAGIC     : []),
+            ...(typeof DATA_AREA      !== 'undefined' ? DATA_AREA      : [])
+        ].filter(e => e.name && e.name.trim() !== ''); // buang entry kosong
 
-            const response = await fetch(CONFIG.csvUrl, {
-                signal: controller.signal
-            });
-            clearTimeout(timeout);
-
-            const csvText = await response.text();
-            rawData = parseCSV(csvText);
-
-            // Kalau data kosong/gagal parse, fallback ke mock
-            if (!rawData || rawData.length === 0) {
-                rawData = getMockArchive();
-            }
-        }
+        rawData = all.length > 0 ? all : getMockArchive();
     } catch (e) {
-        console.error("Data Sync Failed:", e);
+        console.error('Data Load Failed:', e);
         rawData = getMockArchive();
     }
     return rawData;
